@@ -1,0 +1,6 @@
+{
+    "board": "esp8266:esp8266:nodemcu",
+    "sketch": "ball/main.ino",
+    "port": "COM4",
+    "output": "./ball/build"
+}

@@ -1,0 +1,36 @@
+{
+    "remote.SSH.remotePlatform": {
+        "otto": "linux"
+    },
+    "workbench.startupEditor": "newUntitledFile",
+    "files.trimTrailingWhitespace": true,
+    "editor.renderWhitespace": "all",
+    "editor.rulers": [
+        80,
+        100,
+        120
+    ],
+    "python.linting.flake8Enabled": true,
+    "python.linting.flake8Args": [
+        "--max-line-length=100"
+    ],
+    "files.watcherExclude": {
+        "**/.git/**": true,
+        "**/node_modules/**": true,
+        "**/venv/**": true,
+        "**/__pycache__/**": true
+    },
+    "git.autofetch": true,
+    "explorer.confirmDragAndDrop": false,
+
+
+    "arduino.path": "/home/reimund/arduino/arduino-1.8.6",
+    "arduino.logLevel": "info",
+    "arduino.enableUSBDetection": true,
+    "arduino.disableTestingOpen": false,
+    "arduino.skipHeaderProvider": false,
+    "arduino.additionalUrls": [
+        "https://raw.githubusercontent.com/VSChina/azureiotdevkit_tools/master/package_azureboard_index.json",
+        "http://arduino.esp8266.com/stable/package_esp8266com_index.json"
+    ],
+}
