@@ -60,7 +60,7 @@ rgb_color hsvToRgb(uint16_t h, uint8_t s, uint8_t v)
   return rgb_color(r, g, b);
 }
 
-void led_loop()
+void led_run()
 {
   //led_blink();
   led_rainbow();

@@ -1,4 +1,7 @@
-
+#include <ESP8266WiFi.h>
+#include <ESP8266mDNS.h>
+#include <WiFiUdp.h>
+#include <ArduinoOTA.h>
 
 // Port defaults to 8266
 // ArduinoOTA.setPort(8266);
@@ -58,4 +61,8 @@ void ota_setup() {
   Serial.println("Ready");
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
+}
+
+void ota_run() {
+  ArduinoOTA.handle();
 }
