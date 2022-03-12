@@ -24,6 +24,9 @@ https://lastminuteengineers.com/esp8266-ota-updates-arduino-ide/
 https://arduino-esp8266.readthedocs.io/en/latest/ota_updates/readme.html#arduino-ide
 https://github.com/versamodule/ESP32-OTA-Commandline
 
+### Reed-Sensor describtion
+
+https://randomnerdtutorials.com/monitor-your-door-using-magnetic-reed-switch-and-arduino/
 
 ## CLI (not recommended because FOTA not supported with CLI)
 
