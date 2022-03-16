@@ -1,98 +1,43 @@
-/* This example shows how to display a moving rainbow pattern on
-   an APA102-based LED strip. */
+// Simple strand test for Adafruit Dot Star RGB LED strip.
+// This is a basic diagnostic tool, NOT a graphics demo...helps confirm
+// correct wiring and tests each pixel's ability to display red, green
+// and blue and to forward data down the line.  By limiting the number
+// and color of LEDs, it's reasonably safe to power a couple meters off
+// the Arduino's 5V pin.  DON'T try that with other code!
 
-/* By default, the APA102 library uses pinMode and digitalWrite
-   to write to the LEDs, which works on all Arduino-compatible
-   boards but might be slow.  If you have a board supported by
-   the FastGPIO library and want faster LED updates, then install
-   the FastGPIO library and uncomment the next two lines: */
-#include <FastGPIO.h>
-#define APA102_USE_FAST_GPIO
+#include <Adafruit_DotStar.h>
+// Because conditional #includes don't work w/Arduino sketches...
+#include <SPI.h>         // COMMENT OUT THIS LINE FOR GEMMA OR TRINKET
+//#include <avr/power.h> // ENABLE THIS LINE FOR GEMMA OR TRINKET
 
-#include <APA102.h>
 
-// Define which pins to use.
-uint8_t led_dataPin = 11;
-uint8_t led_clockPin = 12;
-bool h;
 
-// Create an object for writing to the LED strip.
-APA102<dataPin, clockPin> ledStrip;
+Adafruit_DotStar strip(NUMPIXELS, DATAPIN, CLOCKPIN, DOTSTAR_BRG);
 
-// Set the number of LEDs to control.
-const uint16_t ledCount = 135;
-
-// Create a buffer for holding the colors (3 bytes per color).
-rgb_color colors[ledCount];
-// Set the brightness to use (the maximum is 31).
-const uint8_t brightness = 1;
-
-void led_setup(uint8_t dataPin, uint8_t clockPin)
+void led_setup()
 {
-  led_dataPin = dataPin;
-  led_clockPin = clockPin;
-  for (uint16_t i = 0; i < ledCount; i++) {
-    colors[i] = rgb_color(255, 0, 0);
-    colors2[i] = rgb_color(0, 255, 0);
-    h = false;
-  }
+  #if defined(__AVR_ATtiny85__) && (F_CPU == 16000000L)
+    clock_prescale_set(clock_div_1); // Enable 16 MHz on Trinket
+  #endif
+  
+    strip.begin(); // Initialize pins for output
+    strip.show();  // Turn all LEDs off ASAP
 }
 
-/* Converts a color from HSV to RGB.
-   h is hue, as a number between 0 and 360.
-   s is the saturation, as a number between 0 and 255.
-   v is the value, as a number between 0 and 255. */
-rgb_color hsvToRgb(uint16_t h, uint8_t s, uint8_t v)
-{
-  uint8_t f = (h % 60) * 255 / 60;
-  uint8_t p = (255 - s) * (uint16_t)v / 255;
-  uint8_t q = (255 - f * (uint16_t)s / 255) * (uint16_t)v / 255;
-  uint8_t t = (255 - (255 - f) * (uint16_t)s / 255) * (uint16_t)v / 255;
-  uint8_t r = 0, g = 0, b = 0;
-  switch ((h / 60) % 6) {
-    case 0: r = v; g = t; b = p; break;
-    case 1: r = q; g = v; b = p; break;
-    case 2: r = p; g = v; b = t; break;
-    case 3: r = p; g = q; b = v; break;
-    case 4: r = t; g = p; b = v; break;
-    case 5: r = v; g = p; b = q; break;
-  }
-  return rgb_color(r, g, b);
-}
+int      head  = 0, tail = -10; // Index of first 'on' and 'off' pixels
+uint32_t color = 0xFF0000;      // 'On' color (starts red)
 
 void led_run()
 {
-  //led_blink();
-  led_rainbow();
-  //led_fastChange();
-}
-void led_blink() {
-    ledStrip.write(colors, ledCount, brightness);
-    delay(1000);
-    ledStrip.write(colors2, ledCount, brightness);
-    delay(1000);
-}
+  strip.setPixelColor(head, color); // 'On' pixel at head
+  strip.setPixelColor(tail, 0);     // 'Off' pixel at tail
+  strip.show();                     // Refresh strip
+  delay(20);                        // Pause 20 milliseconds (~50 FPS)
 
-void led_fastChange() {
-   if(h) {
-    ledStrip.write(colors, ledCount, brightness);
-  } else {
-  ledStrip.write(colors2, ledCount, brightness);
+  if (++head >= NUMPIXELS) {        // Increment head index.  Off end of strip?
+    head = 0;                       //  Yes, reset head index to start
+    if ((color >>= 8) == 0)         //  Next color (R->G->B) ... past blue now?
+      color = 0xFF0000;             //   Yes, reset to red
   }
-  h = !h;
-}
-
-void led_rainbow()
-{
-  uint8_t time = millis() >> 4;
-
-  for (uint16_t i = 0; i < ledCount; i++)
-  {
-    uint8_t p = time - i * 8;
-    colors[i] = hsvToRgb((uint32_t)p * 359 / 256, 255, 255);
-  }
-
-  ledStrip.write(colors, ledCount, brightness);
-
-  delay(10);
+  if (++tail >= NUMPIXELS) tail = 0; // Increment, reset tail index
 }

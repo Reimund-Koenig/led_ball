@@ -3,6 +3,14 @@
 #include <WiFiUdp.h>
 #include <ArduinoOTA.h>
 
+#ifndef STASSID
+#define STASSID "KOENIG"
+#define STAPSK  "Lachen*Lustig-Johanna"
+#endif
+
+const char* ssid = STASSID;
+const char* password = STAPSK;
+
 // Port defaults to 8266
 // ArduinoOTA.setPort(8266);
 
@@ -22,7 +30,14 @@ void ota_setup() {
   WiFi.begin(ssid, password);
   while (WiFi.waitForConnectResult() != WL_CONNECTED) {
     Serial.println("Connection Failed! Rebooting...");
-    delay(5000);
+    int i = 0;
+    while(i<10) {
+        digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
+        delay(250);                       // wait for a second
+        digitalWrite(LED_BUILTIN, LOW);    // turn the LED off by making the voltage LOW
+        delay(250);
+        i++;
+    }
     ESP.restart();
   }
 
