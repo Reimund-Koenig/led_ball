@@ -8,12 +8,16 @@
    the FastGPIO library and uncomment the next two lines: */
 // #include <FastGPIO.h>
 // #define APA102_USE_FAST_GPIO
-
+#define DATAPIN    13
+#define CLOCKPIN   14
+#define NUMPIXELS 135 
 #include <APA102.h>
 
 // Create an object for writing to the LED strip.
 APA102<DATAPIN, CLOCKPIN> ledStrip;
 
+// Create a buffer for holding the colors (3 bytes per color).
+rgb_color colors[NUMPIXELS];
 
 // Set the brightness to use (the maximum is 31).
 const uint8_t brightness = 1;
@@ -38,8 +42,8 @@ rgb_color hsvToRgb(uint16_t h, uint8_t s, uint8_t v) {
   }
   return rgb_color(r, g, b);
 }
-
-void led_run() {
+void setup() {}
+void loop() {
   uint8_t time = millis() >> 4;
   for (uint16_t i = 0; i < NUMPIXELS; i++)
   {
