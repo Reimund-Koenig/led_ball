@@ -14,8 +14,6 @@
 // Create an object for writing to the LED strip.
 APA102<DATAPIN, CLOCKPIN> ledStrip;
 
-// Create a buffer for holding the colors (3 bytes per color).
-rgb_color colors[NUMPIXELS];
 
 // Set the brightness to use (the maximum is 31).
 const uint8_t brightness = 1;
