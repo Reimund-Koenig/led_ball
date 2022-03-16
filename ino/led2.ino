@@ -24,7 +24,7 @@ const uint8_t brightness = 1;
    h is hue, as a number between 0 and 360.
    s is the saturation, as a number between 0 and 255.
    v is the value, as a number between 0 and 255. */
-RGB_color hsvToRgb(uint16_t h, uint8_t s, uint8_t v) {
+rgb_color hsvToRgb(uint16_t h, uint8_t s, uint8_t v) {
   uint8_t f = (h % 60) * 255 / 60;
   uint8_t p = (255 - s) * (uint16_t)v / 255;
   uint8_t q = (255 - f * (uint16_t)s / 255) * (uint16_t)v / 255;
@@ -41,7 +41,7 @@ RGB_color hsvToRgb(uint16_t h, uint8_t s, uint8_t v) {
   return rgb_color(r, g, b);
 }
 
-void led_run2() {
+void led_run() {
   uint8_t time = millis() >> 4;
   for (uint16_t i = 0; i < NUMPIXELS; i++)
   {
