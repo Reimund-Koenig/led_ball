@@ -1,3 +1,4 @@
+#ifdef MYLED1
 // Simple strand test for Adafruit Dot Star RGB LED strip.
 // This is a basic diagnostic tool, NOT a graphics demo...helps confirm
 // correct wiring and tests each pixel's ability to display red, green
@@ -5,17 +6,14 @@
 // and color of LEDs, it's reasonably safe to power a couple meters off
 // the Arduino's 5V pin.  DON'T try that with other code!
 
-#include <Adafruit_DotStar.h>
+//#include <Adafruit_DotStar.h>
 // Because conditional #includes don't work w/Arduino sketches...
-#include <SPI.h>         // COMMENT OUT THIS LINE FOR GEMMA OR TRINKET
+//#include <SPI.h>         // COMMENT OUT THIS LINE FOR GEMMA OR TRINKET
 //#include <avr/power.h> // ENABLE THIS LINE FOR GEMMA OR TRINKET
-
-
-
-Adafruit_DotStar strip(NUMPIXELS, DATAPIN, CLOCKPIN, DOTSTAR_BRG);
 
 void led_setup()
 {
+  Adafruit_DotStar strip(NUMPIXELS, DATAPIN, CLOCKPIN, DOTSTAR_BRG);
   #if defined(__AVR_ATtiny85__) && (F_CPU == 16000000L)
     clock_prescale_set(clock_div_1); // Enable 16 MHz on Trinket
   #endif
@@ -41,3 +39,4 @@ void led_run()
   }
   if (++tail >= NUMPIXELS) tail = 0; // Increment, reset tail index
 }
+#endif
