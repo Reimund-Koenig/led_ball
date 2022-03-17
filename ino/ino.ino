@@ -2,7 +2,8 @@
 #define DATAPIN    13
 #define CLOCKPIN   14
 #define NUMPIXELS 135 // Number of LEDs in strip
-#define REED_SWITCH_PIN 6
+#define REED_SWITCH_PIN 18
+#define EMPTY_PIN_BROWN 17
 
 #define MYLED2
 #ifdef MYLED1
@@ -25,7 +26,7 @@ Adafruit_DotStar strip(NUMPIXELS, DATAPIN, CLOCKPIN, DOTSTAR_BRG);
 
 void setup() {
   Serial.begin(115200);
-  //ota_setup();
+  ota_setup();
   //led_setup();
   led2_setup();
   //led3_setup();
@@ -36,7 +37,7 @@ void setup() {
 }
 
 void loop() {
-  //ota_run();
+  ota_run();
   //reed_run();
   led2_run();
 }
