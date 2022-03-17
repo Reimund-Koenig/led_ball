@@ -2,8 +2,8 @@
 #define DATAPIN    13
 #define CLOCKPIN   14
 #define NUMPIXELS 135 // Number of LEDs in strip
-#define REED_SWITCH_PIN 18
-#define EMPTY_PIN_BROWN 17
+#define REED_SWITCH_PIN 0
+#define EMPTY_PIN_BROWN 2
 
 #define MYLED2
 #ifdef MYLED1
@@ -26,18 +26,18 @@ Adafruit_DotStar strip(NUMPIXELS, DATAPIN, CLOCKPIN, DOTSTAR_BRG);
 
 void setup() {
   Serial.begin(115200);
-  ota_setup();
-  //led_setup();
-  led2_setup();
-  //led3_setup();
-  //reed_setup(REED_SWITCH_PIN);
-
-  // BLINK
   pinMode(LED_BUILTIN, OUTPUT);
+  ota_setup();
+  led_setup();
+  reed_setup();
+
+  delay(100);
+  digitalWrite(LED_BUILTIN, LOW);
 }
 
 void loop() {
   ota_run();
-  //reed_run();
-  led2_run();
+  led_show_iter_contact_state(reed_iterate_contact_to_magnet());
+  //led_switch_on_contact_change(reed_is_contact_to_magnet());
+  //led_fastChange();
 }

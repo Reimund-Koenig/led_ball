@@ -1,32 +1,34 @@
 #ifdef MYLED3
 // Define the array of leds
-CRGB led3_leds[NUMPIXELS];
-CRGB led3_color_red[NUMPIXELS];
-CRGB led3_color_green[NUMPIXELS];
+CRGB ledStrip[NUMPIXELS];
+CRGB color_red[NUMPIXELS];
+CRGB color_green[NUMPIXELS];
+CRGB color_off[NUMPIXELS];
 
-bool led3_switch;
+bool switch;
 
-void led3_setup() {
-  led3_switch = true;
-  FastLED.addLeds<APA102, DATAPIN, CLOCKPIN, RGB>(led3_leds, NUMPIXELS);  // BGR ordering is typical
+void led_setup() {
+  switch = true;
+  FastLED.addLeds<APA102, DATAPIN, CLOCKPIN, RGB>(ledStrip, NUMPIXELS);  // BGR ordering is typical
   for (uint16_t i = 0; i < NUMPIXELS; i++) {
-    led3_color_red[i] = CRGB::Red;
-    led3_color_green[i] = CRGB::Green;
+    color_red[i] = CRGB::Red;
+    color_green[i] = CRGB::Green;
+    color_off[i] = CRGB::Black;
   }
 }
 
-void led3_run() {
-  led3_fastChange();
+void led_run() {
+  led_fastChange();
 }
 
-void led3_fastChange() {
-  if (led2_switch) {
-    led3_leds[22] =  CRGB::Green;
+void led_fastChange() {
+  if (switch) {
+    ledStrip[22] =  CRGB::Green;
     FastLED.show();
   } else {
-    led3_leds[22] =  CRGB::Red;
+    ledStrip[22] =  CRGB::Red;
     FastLED.show();
   }
-  led3_switch = !led3_switch;
+  switch = !switch;
 }
 #endif

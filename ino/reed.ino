@@ -1,14 +1,15 @@
-int reed_switchReed=6;
-
-void reed_setup(int switchReed) {
-  reed_switchReed = switchReed;
-  pinMode(reed_switchReed, INPUT);
+int reed_iter;
+void reed_setup() {
+  pinMode(REED_SWITCH_PIN, INPUT);
+  reed_iter = 0;
 }
 
-void reed_run(){
-  if (digitalRead(reed_switchReed)==HIGH){
-      Serial.println("Your Door is Closed");
-  } else {
-      Serial.println("Your Door is Open");
-  }
+bool reed_is_contact_to_magnet(){
+  return digitalRead(REED_SWITCH_PIN) == LOW;
+}
+
+int reed_iterate_contact_to_magnet(){
+  if(digitalRead(REED_SWITCH_PIN) == HIGH) { return 5; }
+  reed_iter = (reed_iter+1)%3;
+  return reed_iter;
 }
